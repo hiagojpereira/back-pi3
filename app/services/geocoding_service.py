@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify
 import requests
+from keys import getGoogleApiKey
 
-# GOOGLE_API_KEY = 'AIzaSyAbrlPIb1ltEpKERsbl-2LsiHajiskV7Jk'
-GOOGLE_API_KEY = 'AIzaSyDVnZWRCak8VekdhI2Ur3dbPg-5C2cz6eU'
+GOOGLE_API_KEY = getGoogleApiKey()
 
 def geocode(address):
     if not address:

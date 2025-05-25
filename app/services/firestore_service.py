@@ -6,25 +6,24 @@ from .geocoding_service import geocode
 cred = credentials.Certificate(r'C:\repos\pi3\back-pi3\projeto-integrador-3-da126-firebase-adminsdk-fbsvc-4bf42901b0.json')
 firebase_admin.initialize_app(cred)
 
-# Obtendo uma instância do Firestore
 db = firestore.client()
 
 def add_user_data_fs(data):
-    user_data_ref = db.collection("users_data").document()  # Usando o ID do usuário como chave
-    user_data_ref.set(data)  # Adiciona os dados no Firestore
+    user_data_ref = db.collection("users_data").document()
+    user_data_ref.set(data)
     return user_data_ref.id
 
 def get_all_user_data_fs():
-    users_data_ref = db.collection("users_data").stream()  # Obtém todos os documentos da coleção 'users'
-    users_data = [{**doc.to_dict(), "id": doc.id} for doc in users_data_ref]  # Converte os dados em lista de dicionários
+    users_data_ref = db.collection("users_data").stream()
+    users_data = [{**doc.to_dict(), "id": doc.id} for doc in users_data_ref]
     return users_data
 
 
 #################### SHEETS ####################
 
 def get_all_sheets_fs():
-    sheets_ref = db.collection("sheet_data").order_by("data", direction="DESCENDING").stream()  # Obtém todos os documentos da coleção 'users'
-    sheets = [{**doc.to_dict(), "id": doc.id} for doc in sheets_ref]  # Converte os dados em lista de dicionários
+    sheets_ref = db.collection("sheet_data").order_by("data", direction="DESCENDING").stream()  
+    sheets = [{**doc.to_dict(), "id": doc.id} for doc in sheets_ref] 
     return sheets
 
 def get_sheet_fs(sheet_id):
@@ -36,9 +35,14 @@ def get_sheet_fs(sheet_id):
 
 def add_sheet_fs(data):
     for dado in data['dados']:
+        x = dado['DT_NASC']
+        
+        
         location = None
         try:
-            location = geocode(dado['endereco'].replace('\u200b', ''))  
+            end = f'cep: {dado['NU_CEP']}, rua:{dado['NM_LOGRADO']}, número: {dado['NU_NUMERO']}'
+                        
+            location = geocode(end)  
             dado['lat'] = location['lat'] if location else "not found"
             dado['lng'] = location['lng'] if location else "not found"                
         except:  

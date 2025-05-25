@@ -1,10 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app.services.firestore_service import add_sheet_fs, get_all_sheets_fs, delete_sheet_fs, get_sheet_fs
 
-
-from app.services.geocoding_service import geocode
-
-# Criando o blueprint para as rotas de usuários
 bp = Blueprint('sheet', __name__, url_prefix='/sheet')
 
 # Rota para listar todos os usuários
